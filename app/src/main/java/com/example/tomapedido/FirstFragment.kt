@@ -38,36 +38,13 @@ class FirstFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val btnLogin = view.findViewById<Button>(R.id.btnLogin)
-        val etUser = view.findViewById<EditText>(R.id.etUsername)
-        val etPin = view.findViewById<EditText>(R.id.etPin)
+        binding.cardMesero.setOnClickListener {
+            findNavController().navigate(R.id.action_FirstFragment_to_mesasFragment)
+        }
 
-        btnLogin.setOnClickListener {
-            val user = etUser.text.toString()
-            val pin = etPin.text.toString()
-
-            if (user.isNotEmpty() && pin.isNotEmpty()) {
-                val loginReq = LoginRequest(user, pin)
-
-                // Llamada a tu servidor Python
-                RetrofitClient.instance.login(loginReq).enqueue(object : retrofit2.Callback<LoginResponse> {
-                    override fun onResponse(call: Call<LoginResponse>, response: Response<LoginResponse>) {
-                        if (response.isSuccessful) {
-                            val body = response.body()
-                            Toast.makeText(context, "Bienvenido ${body?.nombre}", Toast.LENGTH_SHORT).show()
-
-                            // Si el login es correcto, pasamos a la siguiente pantalla
-                            findNavController().navigate(R.id.action_FirstFragment_to_SecondFragment)
-                        } else {
-                            Toast.makeText(context, "Error: Usuario o PIN incorrectos", Toast.LENGTH_SHORT).show()
-                        }
-                    }
-
-                    override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
-                        Toast.makeText(context, "Fallo de conexión: ${t.message}", Toast.LENGTH_LONG).show()
-                    }
-                })
-            }
+        binding.cardCocina.setOnClickListener {
+            // Por ahora mostramos un mensaje, luego haremos el fragmento de cocina
+            Toast.makeText(context, "Módulo de cocina en construcción", Toast.LENGTH_SHORT).show()
         }
     }
 

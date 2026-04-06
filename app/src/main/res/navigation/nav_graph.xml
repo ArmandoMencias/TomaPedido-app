@@ -10,10 +10,9 @@
         android:name="com.example.tomapedido.FirstFragment"
         android:label="@string/first_fragment_label"
         tools:layout="@layout/fragment_first">
-
         <action
-            android:id="@+id/action_FirstFragment_to_SecondFragment"
-            app:destination="@id/SecondFragment" />
+            android:id="@+id/action_FirstFragment_to_mesasFragment"
+            app:destination="@id/mesasFragment" />
     </fragment>
     <fragment
         android:id="@+id/SecondFragment"
@@ -24,5 +23,25 @@
         <action
             android:id="@+id/action_SecondFragment_to_FirstFragment"
             app:destination="@id/FirstFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/mesasFragment"
+        android:name="com.example.tomapedido.MesasFragment"
+        android:label="fragment_mesas"
+        tools:layout="@layout/fragment_mesas" >
+        <action
+            android:id="@+id/action_mesasFragment_to_cuentaFragment"
+            app:destination="@id/cuentaFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/cuentaFragment"
+        android:name="com.example.tomapedido.CuentaFragment"
+        android:label="CuentaFragment" >
+        <action
+            android:id="@+id/action_cuentaFragment_to_SecondFragment"
+            app:destination="@id/SecondFragment" />
+        <action
+            android:id="@+id/action_cuentaFragment_to_mesasFragment"
+            app:destination="@id/mesasFragment" />
     </fragment>
 </navigation>

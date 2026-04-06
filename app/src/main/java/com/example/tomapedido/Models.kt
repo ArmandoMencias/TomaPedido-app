@@ -19,3 +19,10 @@ data class LoginResponse(
     val nombre: String,
     val rol: String
 )
+
+data class TicketRequest(
+    val cliente: String,
+    val productos: List<Producto>,
+    val total: Double,
+    val status: String
+)
