@@ -4,9 +4,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="8dp"
-    app:cardCornerRadius="12dp"
-    app:cardElevation="4dp"
+    android:layout_marginHorizontal="12dp"
+    android:layout_marginVertical="8dp"
+    app:cardCornerRadius="16dp"
+    app:cardElevation="6dp"
     android:clickable="true"
     android:focusable="true"
     android:foreground="?android:attr/selectableItemBackground">
@@ -14,28 +15,67 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="20dp"
-        android:gravity="center">
+        android:orientation="horizontal"
+        android:baselineAligned="false">
 
-        <TextView
-            android:id="@+id/tvNombreCliente"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Nombre del Cliente"
-            android:textSize="22sp"
-            android:textStyle="bold"
-            android:textColor="#333333" />
+        <!-- Barra lateral de color para dar estilo (Mismo azul que el modo mesero) -->
+        <View
+            android:layout_width="6dp"
+            android:layout_height="match_parent"
+            android:background="#1565C0" />
 
-        <TextView
-            android:id="@+id/tvEstadoComanda"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="Comanda Abierta"
-            android:textSize="14sp"
-            android:textColor="#4CAF50"
-            android:layout_marginTop="8dp"
-            android:textStyle="bold"/>
+            android:layout_weight="1"
+            android:orientation="horizontal"
+            android:padding="20dp"
+            android:gravity="center_vertical">
+
+            <!-- Icono de usuario o mesa -->
+            <ImageView
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:src="@android:drawable/ic_menu_myplaces"
+                app:tint="#BDBDBD"
+                android:layout_marginEnd="16dp"/>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tvNombreCliente"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Nombre del Cliente"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:textColor="#333333" />
+
+                <TextView
+                    android:id="@+id/tvEstadoComanda"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="COMANDA ABIERTA"
+                    android:textSize="12sp"
+                    android:letterSpacing="0.1"
+                    android:textColor="#4CAF50"
+                    android:layout_marginTop="4dp"
+                    android:textStyle="bold"/>
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <!-- Icono de "flecha" para indicar que se puede hacer clic -->
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginEnd="16dp"
+            android:src="@android:drawable/ic_media_play"
+            app:tint="#E0E0E0" />
 
     </LinearLayout>
 

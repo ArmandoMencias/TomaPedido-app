@@ -31,17 +31,19 @@ class MesasFragment : Fragment() {
 
         // --- FUNCIÓN PARA CARGAR DATOS ---
         fun cargarMesas() {
-            RetrofitClient.instance.getClientesActivos().enqueue(object : Callback<List<String>> {
-                override fun onResponse(call: Call<List<String>>, response: Response<List<String>>) {
+            // CAMBIADO: Ahora esperamos una lista de TicketRequest en lugar de Strings
+            RetrofitClient.instance.getClientesActivos().enqueue(object : Callback<List<TicketRequest>> {
+                override fun onResponse(call: Call<List<TicketRequest>>, response: Response<List<TicketRequest>>) {
                     if (response.isSuccessful) {
                         val listaReal = response.body() ?: emptyList()
+                        // El MesasAdapter ahora puede usar el estatus para mostrar el color verde
                         recyclerView.adapter = MesasAdapter(listaReal) { cliente ->
                             val bundle = Bundle().apply { putString("nombreCliente", cliente) }
                             findNavController().navigate(R.id.action_mesasFragment_to_cuentaFragment, bundle)
                         }
                     }
                 }
-                override fun onFailure(call: Call<List<String>>, t: Throwable) {
+                override fun onFailure(call: Call<List<TicketRequest>>, t: Throwable) {
                     Toast.makeText(context, "Error de red", Toast.LENGTH_SHORT).show()
                 }
             })
@@ -52,7 +54,6 @@ class MesasFragment : Fragment() {
         // --- BOTÓN AÑADIR (+) ---
         val fabNuevaComanda = view.findViewById<FloatingActionButton>(R.id.fabNuevaComanda)
         fabNuevaComanda.setOnClickListener {
-            // Un simple diálogo para pedir el nombre del cliente
             val builder = android.app.AlertDialog.Builder(context)
             builder.setTitle("Nueva Mesa")
             val input = android.widget.EditText(context)

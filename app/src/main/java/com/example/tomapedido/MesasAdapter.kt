@@ -1,19 +1,21 @@
 package com.example.tomapedido
 
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
+// Ahora recibimos TicketRequest para saber el estatus de cada mesa
 class MesasAdapter(
-    private val mesas: List<String>,
+    private var mesas: List<TicketRequest>,
     private val onItemClick: (String) -> Unit
 ) : RecyclerView.Adapter<MesasAdapter.MesasViewHolder>() {
 
     class MesasViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val tvNombreCliente: TextView = view.findViewById(R.id.tvNombreCliente)
-        // El estado de la comanda ya está fijo en el XML como "Comanda Abierta" por ahora
+        val tvEstadoComanda: TextView = view.findViewById(R.id.tvEstadoComanda)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MesasViewHolder {
@@ -23,14 +25,29 @@ class MesasAdapter(
     }
 
     override fun onBindViewHolder(holder: MesasViewHolder, position: Int) {
-        val cliente = mesas[position]
-        holder.tvNombreCliente.text = cliente
+        val ticket = mesas[position]
+        holder.tvNombreCliente.text = ticket.cliente
+        
+        // --- CAMBIO VISUAL SEGÚN ESTATUS DE COCINA ---
+        if (ticket.status_cocina.equals("listo", ignoreCase = true)) {
+            holder.tvEstadoComanda.text = "¡LISTO EN COCINA! ✅"
+            holder.tvEstadoComanda.setTextColor(Color.parseColor("#27AE60")) // Verde esmeralda
+            holder.tvNombreCliente.setTextColor(Color.parseColor("#27AE60"))
+        } else {
+            holder.tvEstadoComanda.text = "En preparación... 🕒"
+            holder.tvEstadoComanda.setTextColor(Color.GRAY)
+            holder.tvNombreCliente.setTextColor(Color.BLACK)
+        }
 
-        // Cuando el mesero toque a "Ana" o "Juan"
         holder.itemView.setOnClickListener {
-            onItemClick(cliente)
+            onItemClick(ticket.cliente)
         }
     }
 
     override fun getItemCount(): Int = mesas.size
+
+    fun updateMesas(newMesas: List<TicketRequest>) {
+        mesas = newMesas
+        notifyDataSetChanged()
+    }
 }

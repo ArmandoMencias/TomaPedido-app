@@ -1,37 +1,69 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:paddingHorizontal="16dp"
+    android:paddingVertical="8dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:padding="12dp">
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
 
+        <!-- Indicador de cantidad con estilo de ticket -->
+        <TextView
+            android:id="@+id/tvCantidadProductoCuenta"
+            android:layout_width="30dp"
+            android:layout_height="wrap_content"
+            android:text="1x"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:textColor="#757575" />
+
+        <!-- Nombre del producto -->
         <TextView
             android:id="@+id/tvNombreProductoCuenta"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Producto"
-            android:textSize="18sp"
-            android:textColor="#333333"/>
+            android:text="Nombre del Producto"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:textColor="#333333"
+            android:layout_marginEnd="8dp"/>
 
+        <!-- Precio con color de dinero -->
         <TextView
             android:id="@+id/tvPrecioProductoCuenta"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="$0.00"
-            android:textSize="18sp"
+            android:textSize="16sp"
             android:textStyle="bold"
-            android:textColor="#333333"/>
+            android:textColor="#2E7D32" />
     </LinearLayout>
 
+    <!-- Lista de ingredientes extras o notas (Si existen) -->
+    <TextView
+        android:id="@+id/tvIngredientesCuenta"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="2dp"
+        android:text="+ Sin cebolla, con extra queso"
+        android:textSize="12sp"
+        android:textColor="#9E9E9E"
+        android:fontFamily="sans-serif-light"
+        android:visibility="visible"/>
+
+    <!-- Línea divisoria punteada o sutil -->
     <View
         android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="#E0E0E0" />
+        android:layout_height="0.5dp"
+        android:layout_marginTop="10dp"
+        android:background="#EEEEEE" />
 
 </LinearLayout>

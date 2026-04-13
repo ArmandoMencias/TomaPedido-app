@@ -2,57 +2,72 @@
 <androidx.cardview.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="8dp"
-    app:cardCornerRadius="12dp"
-    app:cardElevation="4dp">
+    app:cardCornerRadius="20dp"
+    app:cardElevation="6dp"
+    android:clickable="true"
+    android:focusable="true"
+    android:foreground="?android:attr/selectableItemBackground">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="12dp"
+        android:padding="16dp"
         android:gravity="center_horizontal">
 
-        <TextView
-            android:id="@+id/tvIcono"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:background="#FFE0B2"
-            android:text="🌮"
-            android:textSize="30sp"
-            android:gravity="center"
-            android:layout_marginBottom="8dp"/>
+        <!-- Contenedor CUADRADO para el Emoji/Icono -->
+        <FrameLayout
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:background="@drawable/bg_square_icon"
+            android:layout_marginBottom="12dp">
+
+            <TextView
+                android:id="@+id/tvIcono"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="🌮"
+                android:textSize="38sp"
+                android:gravity="center" />
+        </FrameLayout>
 
         <TextView
             android:id="@+id/tvNombreProducto"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Nombre"
-            android:textSize="16sp"
+            android:text="Nombre del Platillo"
+            android:textSize="17sp"
             android:textStyle="bold"
+            android:textColor="#333333"
             android:gravity="center"
             android:maxLines="2"
-            android:ellipsize="end"/>
+            android:ellipsize="end"
+            android:minLines="2"/>
 
         <TextView
             android:id="@+id/tvCategoria"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Categoría"
-            android:textSize="12sp"
-            android:textColor="#757575" />
+            android:text="CATEGORÍA"
+            android:textSize="10sp"
+            android:textStyle="bold"
+            android:letterSpacing="0.1"
+            android:textColor="#9E9E9E"
+            android:layout_marginTop="4dp"/>
 
         <TextView
             android:id="@+id/tvPrecio"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="$0.00"
-            android:textColor="#4CAF50"
-            android:textSize="18sp"
+            android:textColor="#2E7D32"
+            android:textSize="20sp"
             android:textStyle="bold"
-            android:layout_marginTop="4dp"/>
+            android:layout_marginTop="8dp"/>
 
     </LinearLayout>
 </androidx.cardview.widget.CardView>

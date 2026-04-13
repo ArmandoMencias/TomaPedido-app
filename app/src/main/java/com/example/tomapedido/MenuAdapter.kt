@@ -30,7 +30,8 @@ class MenuAdapter(
         val producto = productos[position]
 
         holder.tvNombre.text = producto.nombre
-        holder.tvCategoria.text = producto.categoria.uppercase()
+        // Usamos una llamada segura (?.) y el operador Elvis (?:) para manejar el valor nulo
+        holder.tvCategoria.text = producto.categoria?.uppercase() ?: "GENERAL"
         holder.tvPrecio.text = "$${producto.precio}"
 
         // --- EL CAMBIO CLAVE ---

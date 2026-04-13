@@ -7,13 +7,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import com.example.tomapedido.databinding.FragmentFirstBinding
-import android.widget.Button
-import android.widget.EditText
 import android.widget.Toast
-import androidx.navigation.fragment.findNavController
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+
 /**
  * A simple [Fragment] subclass as the default destination in the navigation.
  */
@@ -43,8 +38,7 @@ class FirstFragment : Fragment() {
         }
 
         binding.cardCocina.setOnClickListener {
-            // Por ahora mostramos un mensaje, luego haremos el fragmento de cocina
-            Toast.makeText(context, "Módulo de cocina en construcción", Toast.LENGTH_SHORT).show()
+            findNavController().navigate(R.id.action_FirstFragment_to_cocinaFragment)
         }
     }
 

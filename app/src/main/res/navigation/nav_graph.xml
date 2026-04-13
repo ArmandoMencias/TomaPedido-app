@@ -13,6 +13,9 @@
         <action
             android:id="@+id/action_FirstFragment_to_mesasFragment"
             app:destination="@id/mesasFragment" />
+        <action
+            android:id="@+id/action_FirstFragment_to_cocinaFragment"
+            app:destination="@id/cocinaFragment" />
     </fragment>
     <fragment
         android:id="@+id/SecondFragment"
@@ -44,4 +47,9 @@
             android:id="@+id/action_cuentaFragment_to_mesasFragment"
             app:destination="@id/mesasFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/cocinaFragment"
+        android:name="com.example.tomapedido.CocinaFragment"
+        android:label="Cocina"
+        tools:layout="@layout/fragment_cocina" />
 </navigation>
