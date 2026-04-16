@@ -9,6 +9,10 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.tomapedido.databinding.FragmentCocinaBinding
+import okhttp3.OkHttpClient
+import okhttp3.Request
+import okhttp3.WebSocket
+import okhttp3.WebSocketListener
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -18,6 +22,10 @@ class CocinaFragment : Fragment() {
     private var _binding: FragmentCocinaBinding? = null
     private val binding get() = _binding!!
     private lateinit var adapter: CocinaAdapter
+
+    // Variables para el WebSocket
+    private var webSocket: WebSocket? = null
+    private val client = OkHttpClient()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -37,7 +45,37 @@ class CocinaFragment : Fragment() {
         binding.rvPedidosCocina.layoutManager = LinearLayoutManager(requireContext())
         binding.rvPedidosCocina.adapter = adapter
 
+        // Carga inicial normal
         cargarPedidos()
+
+        // Iniciamos la oreja biónica (WebSocket)
+        iniciarWebSocket()
+    }
+
+    private fun iniciarWebSocket() {
+        // OJO AQUÍ: Pon tu IP real. Nota que empieza con ws:// en lugar de http://
+        val ipServidor = "192.168.1.133"
+        val request = Request.Builder().url("ws://$ipServidor:8000/ws/cocina").build()
+
+        webSocket = client.newWebSocket(request, object : WebSocketListener() {
+            override fun onMessage(webSocket: WebSocket, text: String) {
+                // Cuando FastAPI transmite "NUEVO_PEDIDO"
+                if (text == "NUEVO_PEDIDO") {
+                    Log.d("WebSocket", "¡Aviso de nuevo pedido recibido!")
+
+                    // El WebSocket corre en segundo plano. Para actualizar la pantalla
+                    // o mostrar un Toast, debemos obligarlo a correr en el hilo principal.
+                    activity?.runOnUiThread {
+                        Toast.makeText(context, "¡Nueva comanda entrante!", Toast.LENGTH_SHORT).show()
+                        cargarPedidos() // Recargamos la lista automáticamente
+                    }
+                }
+            }
+
+            override fun onFailure(webSocket: WebSocket, t: Throwable, response: okhttp3.Response?) {
+                Log.e("WebSocket", "Error de conexión: ${t.message}")
+            }
+        })
     }
 
     private fun cargarPedidos() {
@@ -46,9 +84,6 @@ class CocinaFragment : Fragment() {
             override fun onResponse(call: Call<List<TicketRequest>>, response: Response<List<TicketRequest>>) {
                 if (response.isSuccessful) {
                     val pedidos = response.body() ?: emptyList()
-
-                    // 1. Filtramos los que no están listos
-                    // 2. ORDENAMOS por timestamp (el más viejo primero) para la cola FIFO
                     val pedidosPendientes = pedidos
                         .filter { it.status_cocina != "listo" }
                         .sortedBy { it.timestamp }
@@ -66,18 +101,16 @@ class CocinaFragment : Fragment() {
     }
 
     private fun actualizarEstatusCocina(pedido: TicketRequest) {
-        // Obtenemos el ID único de Mongo. Si por algún error es nulo, cancelamos la acción.
         val idUnico = pedido.id_ticket ?: run {
             Toast.makeText(context, "Error: El pedido no tiene ID", Toast.LENGTH_SHORT).show()
             return
         }
 
-        // USAMOS LA NUEVA RUTA QUE ACTUALIZA POR ID DE MONGO, NO POR NOMBRE DE CLIENTE
         RetrofitClient.instance.marcarComandaLista(idUnico).enqueue(object : Callback<Void> {
             override fun onResponse(call: Call<Void>, response: Response<Void>) {
                 if (response.isSuccessful) {
                     Toast.makeText(context, "Pedido enviado a meseros", Toast.LENGTH_SHORT).show()
-                    cargarPedidos() // Recargamos para que el bloque desaparezca de la pantalla
+                    cargarPedidos()
                 }
             }
             override fun onFailure(call: Call<Void>, t: Throwable) {
@@ -88,6 +121,8 @@ class CocinaFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
+        // Es vital desconectar el WebSocket al salir para no drenar la memoria del dispositivo
+        webSocket?.cancel()
         _binding = null
     }
 }
